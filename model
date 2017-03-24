@@ -1,0 +1,37 @@
+state: 
+{
+	settings: {
+		dimensions: {
+			w:
+			h:
+		},
+		location: {
+			x:
+			y:
+		},
+		rubbish: [
+			{
+				x: 
+				y:
+			},
+			...
+		]
+	}
+	room: {
+		dimensions: {
+			w:
+			h:
+		},
+		location: {
+			x:
+			y:
+		},
+		rubbish: [
+			{
+				x: 
+				y:
+			},
+			...
+		]
+	}
+}
