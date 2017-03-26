@@ -10,6 +10,25 @@ import {setTabValue} from './actions';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
+import styled from 'styled-components';
+
+const tabHeight = () => {
+  const isSafari = !!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.body.style.webkitFilter !== "undefined" && !window.chrome;
+  if(isSafari){
+    return `height: calc(100vh - 112px);`  
+  }  
+  return `height: calc(100vh - 48px);`
+}
+
+const TabContent = styled.div`
+  
+  ${tabHeight()}
+  /*height: 400px;*/
+  /*min-height: 400px;*/
+  display: flex;
+  box-sizing: border-box;
+
+`;
 
 const mapStateToProps = ({tabs}) => {
     return {
@@ -52,17 +71,18 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="App">
-          <a className="githubLink" href="https://github.com/bryonchan/roombaba" target="_blank"><img src="/GitHub-Mark-32px.png"/> </a>
+
+          <a className="githubLink" href="https://github.com/bryonchan/roombaba" target="_blank"><img src="/GitHub-Mark-32px.png"/></a>
           <Tabs value={this.props.tabValue} onChange={this.handleTabChange.bind(this)}>
             <Tab label="Roombaba" value="vacuum">
-              <div className="tab">
+              <TabContent className="tab">
                 <RoomView focus={this.state.focusOnRoom} />
-              </div>
+              </TabContent>
             </Tab>
             <Tab label="Settings" value="settings">
-              <div className="tab">
+              <TabContent className="tab">
                 <Settings onSave={this.handleSettingsSave.bind(this)} />
-              </div>
+              </TabContent>
             </Tab>
           </Tabs>
         </div>

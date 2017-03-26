@@ -1,4 +1,30 @@
 import React, { Component, PropTypes } from 'react';
+import styled from 'styled-components';
+
+const CoordinateSelectedWrapper = styled.div`
+	  display: flex;
+	  flex-direction: column;
+	  width: 100%;
+
+	.line {
+	  stroke-width: 0.2px;
+	  stroke:rgb(255,0,0);
+	}
+
+	.svgContainer{ 
+	  width: 100%;
+	  height: 100%;
+	  border: solid 1px purple;
+	  box-sizing: border-box;
+	  position: relative;
+	  overflow: auto;
+	  flex: 1;
+	}
+
+ .rect{
+	  fill:rgb(0,0,255);
+	}
+`;
 
 class CoordinateSelector extends Component {
     static propTypes = {
@@ -119,6 +145,7 @@ class CoordinateSelector extends Component {
     		lines.push(<line key={j+'y'} y1={j*this.state.cellWidth} x1={0} y2={j*this.state.cellWidth} x2={this.props.width*this.state.cellWidth} className="line" onClick={this.handlePointClick}></line>)
     	}
 
+    	// Allows passing in of custom button components
     	const cancelAction = this.props.cancelAction ? React.cloneElement(this.props.cancelAction, {onClick: 
     		() => {
     			this.props.onCancel();
@@ -132,7 +159,7 @@ class CoordinateSelector extends Component {
     	}):null;
 
         return (
-        	<div className="coordinateSelector">
+        	<CoordinateSelectedWrapper className="coordinateSelector">
 	        	<div ref="container" className="svgContainer">
 	            	<svg ref="svg" onClick={this.handleClickSvg.bind(this)} width={this.props.width * this.state.cellWidth} height={this.props.height * this.state.cellWidth}>
 	        			{lines}
@@ -143,7 +170,7 @@ class CoordinateSelector extends Component {
 		        	{cancelAction}
 		        	{nextAction}
 		        </div>
-		    </div>
+		    </CoordinateSelectedWrapper>
         );
     }
 }

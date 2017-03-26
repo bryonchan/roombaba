@@ -31,7 +31,7 @@ class IntegerInput extends Component {
 
     render() {
         return (
-            <TextField inputStyle={{}} style={{width: 100}} floatingLabelText={this.props.label} value={this.state.value} type="number" onChange={this.handleChange} min={this.props.min} />
+            <TextField style={{width: 100}} floatingLabelText={this.props.label} value={this.state.value} type="number" onChange={this.handleChange} min={this.props.min} max={this.props.max} />
         );
     }
 }

@@ -2,6 +2,40 @@ import React, { Component, PropTypes } from 'react';
 import {DraggableCore} from 'react-draggable';
 import IntegerInput from './IntegerInput';
 import RaisedButton from 'material-ui/RaisedButton';
+import styled from 'styled-components';
+
+const DimensionsSelectorWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  	box-sizing: border-box;
+
+	.inputs {
+		height: 72px;
+	}
+
+	.button {
+		height: 36px;
+	}
+`;
+
+const DraggableWrapper = styled.div`
+	width: 100%;
+	border: solid 1px purple;
+	box-sizing: border-box;
+	position: relative;
+	overflow: hidden;
+	border: solid 1px pink;
+	flex: 1;
+`;
+
+const Clone = styled.div`
+	width: 10px;
+	height: 10px;
+	border: dotted 1px red;
+	position: relative;
+`;
 
 class DimensionsSelector extends Component {
     static propTypes = {
@@ -27,9 +61,7 @@ class DimensionsSelector extends Component {
 				width: props.width,
 				height: props.height
 			},
-			cell: {
-				width: 1
-			}
+			cellWidth: 1
 		};
     }
 
@@ -37,17 +69,21 @@ class DimensionsSelector extends Component {
 		this.recalculateCellWidth(this.state.dimensions.width, this.state.dimensions.height);
     }
 
+    // componentWillUpdate(nextProps, nextState) {
+        
+    // }
+
     onResizeStop(ev, data) {
 		let {x, y} = data;
 
-		let width = Math.max(parseInt(x/this.state.cell.width, 10), this.props.minWidth);
+		let width = Math.min(Math.max(parseInt(x/this.state.cellWidth, 10), this.props.minWidth), this.props.maxWidth); //Make sure within bounds
 		this.setState({
 			dimensions: {height: this.state.dimensions.height, width: width},
 			cloneDimensions: {height: this.state.cloneDimensions.height, width: width}
 		});
 		this.refs.width.setValue(width);
 
-		let height = Math.max(parseInt(y/this.state.cell.width, 10), this.props.minHeight);
+		let height = Math.min(Math.max(parseInt(y/this.state.cellWidth, 10), this.props.minHeight), this.props.maxHeight);
 		this.setState({
 			dimensions: {width: this.state.dimensions.width, height: height},
 			cloneDimensions: {width: this.state.cloneDimensions.width, height: height}
@@ -59,18 +95,17 @@ class DimensionsSelector extends Component {
 	}
 
 	onResize(ev, data) {
-		this.setState({cloneDimensions: {width: parseInt(data.x/this.state.cell.width, 10), height: parseInt(data.y/this.state.cell.width, 10)}});
+		this.setState({cloneDimensions: {width: parseInt(data.x/this.state.cellWidth, 10), height: parseInt(data.y/this.state.cellWidth, 10)}});
 	}
 
 	recalculateCellWidth(width, height) {
 		//we want the width and height to be no bigger than half of the available area
-		var widthMultiplier = (this.refs.container.offsetWidth/2) / width;
-		var heightMultiplier = (this.refs.container.offsetHeight/2) / height;
+		var widthMultiplier = (this.draggableWrapper.offsetWidth/2) / width;
+		var heightMultiplier = (this.draggableWrapper.offsetHeight/2) / height;
 
 		this.setState({
-			cell: {
-				width: Math.min(widthMultiplier, heightMultiplier)
-			}
+			cellWidth: Math.min(widthMultiplier, heightMultiplier)
+			
 		})
 
 	}
@@ -78,7 +113,7 @@ class DimensionsSelector extends Component {
 	onWidthChange(ev){
 		let width = parseInt(ev.target.value, 10);
 		if(Number.isInteger(width)){
-			width = Math.max(width, this.props.minWidth);
+			width = Math.min(Math.max(width, this.props.minWidth), this.props.maxWidth);
 			this.setState(
 				{
 					dimensions: {
@@ -98,7 +133,7 @@ class DimensionsSelector extends Component {
 	onHeightChange(ev){
 		let height = parseInt(ev.target.value, 10);
 		if(Number.isInteger(height)){
-			height = Math.max(height, this.props.minHeight);
+			height = Math.min(Math.max(height, this.props.minHeight), this.props.maxHeight);
 			this.setState(
 				{
 					dimensions: {
@@ -118,18 +153,17 @@ class DimensionsSelector extends Component {
 	}
 
     render() {
-    	let cloneDisplayWidth = this.state.cloneDimensions.width * this.state.cell.width;
-    	let cloneDisplayHeight = this.state.cloneDimensions.height * this.state.cell.width;
+    	let cloneDisplayWidth = this.state.cloneDimensions.width * this.state.cellWidth;
+    	let cloneDisplayHeight = this.state.cloneDimensions.height * this.state.cellWidth;
         return (
-            <div className="dimensionsSelector">
-            	<div>
-		            <IntegerInput label="Width" ref="width" placeholder="Width" type="number" onChange={this.onWidthChange} defaultValue={this.props.width} min={this.props.minWidth} />
-		            <IntegerInput label="Height" ref="height" placeholder="Height" type="number" onChange={this.onHeightChange} defaultValue={this.props.height} min={this.props.minHeight} />
+            <DimensionsSelectorWrapper>
+            	<div className="inputs">
+		            <IntegerInput label="Width" ref="width" placeholder="Width" type="number" onChange={this.onWidthChange} defaultValue={this.props.width} min={this.props.minWidth} max={this.props.maxWidth} />
+		            <IntegerInput label="Height" ref="height" placeholder="Height" type="number" onChange={this.onHeightChange} defaultValue={this.props.height} min={this.props.minHeight}  max={this.props.maxHeight} />
             	</div>
-            	<div ref="container" className="dimensionsContainer" >
-		            <div style={{height: this.state.dimensions.height * this.state.cell.width, width: this.state.dimensions.width * this.state.cell.width, border: 'solid 1px red', position: 'relative'}}>
-			            <div style={{height: cloneDisplayHeight, width: cloneDisplayWidth, border: 'dotted 1px red', position: 'relative'}}>
-				        </div>
+            	<DraggableWrapper innerRef={(el) => {this.draggableWrapper = el} }>
+		            <div style={{height: this.state.dimensions.height * this.state.cellWidth, width: this.state.dimensions.width * this.state.cellWidth, border: 'solid 1px red', position: 'relative'}}>
+			            <Clone style={{height: cloneDisplayHeight, width: cloneDisplayWidth}} />
 			            <DraggableCore
 				          key="resizableHandle"
 				          onStop={this.onResizeStop}
@@ -140,9 +174,9 @@ class DimensionsSelector extends Component {
 			        </div>
 			        <span style={{position: 'absolute', top: cloneDisplayHeight/2,left: cloneDisplayWidth + 5}}>{this.state.cloneDimensions.height}</span>
 			        <span style={{position: 'absolute', left: (cloneDisplayWidth/2), top: cloneDisplayHeight + 5}}>{this.state.cloneDimensions.width}</span>
-		        </div>
-		        <RaisedButton label="Next" primary={true} onClick={this.handleSave} />
-            </div>
+		        </DraggableWrapper>
+		        <RaisedButton className="button" label="Next" primary={true} onClick={this.handleSave} />
+            </DimensionsSelectorWrapper>
         );
     }
 }

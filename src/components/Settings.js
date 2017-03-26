@@ -102,7 +102,7 @@ export class Settings extends Component {
 	            <Card className="card">
 	            	<CardHeader style={{paddingBottom: 0}} className="cardHeader" title="Room Dimensions" subtitle="Please select the dimensions of the room" />
 	            	<CardText className="cardText" style={{paddingTop: 0}}>
-	            		<DimensionsSelector width={this.props.dimensions.width} height={this.props.dimensions.height} minWidth={this.props.dimensions.minWidth} minHeight={this.props.dimensions.minHeight} onSave={this.handleSaveDimensions} />
+	            		<DimensionsSelector width={this.props.dimensions.width} height={this.props.dimensions.height} minWidth={this.props.dimensions.minWidth} minHeight={this.props.dimensions.minHeight} maxWidth={this.props.dimensions.maxWidth} maxHeight={this.props.dimensions.maxHeight}  onSave={this.handleSaveDimensions} />
 	            	</CardText>
 		        </Card>
 		        }

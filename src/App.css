@@ -1,3 +1,8 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 .App {
   text-align: center;
 }
@@ -8,6 +13,54 @@
   right: 15px;
   z-index: 5;
 }
+
+
+@keyframes Rock {
+  0% {transform:rotate(0deg);}
+  25% {transform:rotate(10deg);}
+  50% {transform:rotate(0deg);}
+  75% {transform:rotate(-10deg);}
+  100% {transform:rotate(0deg);}
+
+}
+
+.roombaba {
+  transform-origin: 50% 50%;
+}
+
+@media (min-width: 480px){
+  .roombaba {
+    animation: Rock infinite 1s linear;
+  }
+}
+
+.settings {
+  display: flex;
+  padding-left: 10;
+  padding-right: 10;
+  width: 100%;
+  height: calc(100% - 8px);
+}
+
+.card {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+}
+
+.card > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.cardText {
+  height: 100%;
+  display: flex;
+}
+
 
 @keyframes Throb {
   25% {transform: scale(1.5);}
@@ -29,114 +82,6 @@
   animation: Throb infinite 1s linear;
 }
 
-.line {
-  stroke-width: 0.2px;
-  stroke:rgb(255,0,0);
-}
-
-.roomViewContainer {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.roomViewContainer .svgContainer{
-  height: 85%;
-    background: url('/rug-blue.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-
-}
-
-.roomViewContainer .svgContainer .svg{
-  display: block;
-  margin: 0 auto;
-}
-
-.roomViewContainer .buttons{
-  height: 15%;
-  width: 180px;
-  margin: 0 auto;
-  min-height: 100px;
-}
-
-
-@keyframes Rock {
-  0% {transform:rotate(0deg);}
-  25% {transform:rotate(10deg);}
-  50% {transform:rotate(0deg);}
-  75% {transform:rotate(-10deg);}
-  100% {transform:rotate(0deg);}
-
-}
-
-.roombaba {
-  transform-origin: 50% 50%;
-}
-
-@media (min-width: 480px){
-  animation: Rock infinite 1s linear;
-
-}
-
-.dimensionsContainer {
-  width: 100%;
-  border: solid 1px purple;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-}
-
-.tab{
-  height: calc(100vh - 48px);
-  display: flex;
-}
-
-.settings {
-  display: flex;
-  padding-left: 10;
-  padding-right: 10;
-  width: 100%;
-  height: calc(100% - 8px);
-}
-
-.card {
-  display: flex;
-  width: 100%;
-}
-
-.card > div {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.cardText {
-  height: 100%;
-  display: flex;
-}
-
-.dimensionsSelector, .coordinateSelector{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.coordinateSelector .svgContainer{ 
-  width: 100%;
-  height: 100%;
-  border: solid 1px purple;
-  box-sizing: border-box;
-  position: relative;
-  overflow: auto;
-}
-
-.coordinateSelector .rect{
-  fill:rgb(0,0,255);
-}
 
 @keyframes Disappearing {
   25% {opacity: 0;}

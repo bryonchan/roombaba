@@ -3,7 +3,9 @@ let initialState = {
 		width: 25,
 		height: 25,
 		minWidth: 3,
-		minHeight: 3
+		minHeight: 3,
+		maxWidth: 50,
+		maxHeight: 50
 	},
 	roombaba: {
 		x: 5,
