@@ -6,6 +6,7 @@
 - Draggable Dimensions selector
 - WSAD navigation
 - best on Chrome, tested on Android
+- Scales to fit screen
 
 ## Libraries
 - React
