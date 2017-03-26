@@ -1,9 +1,9 @@
 # Roombaba
 
-Works best on Chrome, tested on Android Chrome
-
 ## Features
 - Draggable Dimensions selector
+- WSAD navigation
+- best on Chrome, tested on Android
 
 ## Libraries
 - React
