@@ -89,4 +89,11 @@ export const setTabValue = (value) => {
 		type: 'SET_TAB_VALUE',
 		value
 	}
+}
+
+export const setTime = (value) => {
+	return {
+		type: 'SET_TIME',
+		value
+	}
 } 

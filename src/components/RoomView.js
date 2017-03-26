@@ -7,8 +7,9 @@ import {
     moveRight as moveRightAction,
     moveUp as moveUpAction,
     moveDown as moveDownAction,
+    setTime as setTimeAction,
+    applySettings as applySettingsAction
 } from '../actions';
-import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
 import ArrowBackward from 'material-ui/svg-icons/navigation/arrow-back';
@@ -16,6 +17,8 @@ import ArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
 import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward';
 
 import styled from 'styled-components';
+import Score from './Score';
+import Timer from './Timer';
 
 const RoomViewWrapper = styled.div`
 
@@ -57,6 +60,19 @@ const RoomViewWrapper = styled.div`
 	
 `;
 
+const Winning = styled.div`
+	position: absolute;
+	background: #eee;
+	padding: 10px;
+	width: 180px;
+	top: 40%;
+	left: 0px;
+	right: 0px;
+	margin: 0 auto;
+	cursor: pointer;
+
+`;
+
 const mapDispatchToProps = (dispatch) => {
     return {
         moveLeft: () => {
@@ -71,14 +87,22 @@ const mapDispatchToProps = (dispatch) => {
         moveDown: () => {
             dispatch(moveDownAction());
         },
+        setTime: (value) => {
+            dispatch(setTimeAction(value));
+        },
+        applySettings: (settings) => {
+        	dispatch(applySettingsAction(settings));
+        }
     };
 };
 
-const mapStateToProps = ({room}) => {
+const mapStateToProps = ({room, settings}) => {
     return {
     	roombaba: room.roombaba,
     	dimensions: room.dimensions,
-    	dirt: room.dirt
+    	dirt: room.dirt,
+    	time: room.time,
+    	settings
     };
 };
 
@@ -107,9 +131,9 @@ export class RoomView extends Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.dimensions.width != this.props.dimensions.width || nextProps.dimensions.height != this.props.dimensions.height){
+		if(nextProps.dimensions.width !== this.props.dimensions.width || nextProps.dimensions.height !== this.props.dimensions.height){
 		   	this.recalculateCellWidth(nextProps.dimensions.width, nextProps.dimensions.height); 
-		   }
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -154,6 +178,11 @@ export class RoomView extends Component {
 		}
 	}
 
+	handleStartAgain(ev){
+		this.props.applySettings(this.props.settings);
+		this.props.onRestart();
+	}
+
     render() {
     	let dirt = this.props.dirt.map((r, i) => {
     		// invert the y
@@ -185,7 +214,14 @@ export class RoomView extends Component {
 				      <ArrowForward />
 				    </IconButton>
 				</div>
-				<img className="wasd" src="wasd.png" />
+				<img alt="WASD" className="wasd" src="wasd.png" />
+				<Score score={this.props.dirt.length} />
+				<Timer time={this.props.time} />
+				{this.props.dirt.length === 0 &&
+					<Winning onClick={this.handleStartAgain.bind(this)}>
+						Congratulations, your time is {this.props.time/1000} secs! Click to start again.
+					</Winning>
+				}
 			</RoomViewWrapper>            
         );
     }

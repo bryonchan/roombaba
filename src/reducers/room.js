@@ -7,7 +7,8 @@ const initialState = {
 		x: 0,
 		y: 0
 	},
-	dirt: []
+	dirt: [],
+	time: 0
 }
 
 export const cleanDirt = (state = [], action) => {
@@ -17,7 +18,10 @@ export const cleanDirt = (state = [], action) => {
 const room = (state = initialState, action) => {
 	switch(action.type) {
 		case 'APPLY_SETTINGS': {
-			return {...action.settings};
+			return Object.assign({}, state, {...action.settings});
+		}
+		case 'SET_TIME': {
+			return Object.assign({}, state, {time: action.value});
 		}
 		case 'MOVE_LEFT': {
 			if(state.roombaba.x > 0){

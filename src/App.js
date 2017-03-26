@@ -6,12 +6,11 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { connect } from 'react-redux';
-import {setTabValue} from './actions';
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
-import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
+import {setTabValue, setTime} from './actions';
 import styled from 'styled-components';
+import {} from './actions';
 
+// viewheight seems to be calculated differently on safari
 const tabHeight = () => {
   const isSafari = !!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.body.style.webkitFilter !== "undefined" && !window.chrome;
   if(isSafari){
@@ -21,24 +20,27 @@ const tabHeight = () => {
 }
 
 const TabContent = styled.div`
-  
   ${tabHeight()}
-  /*height: 400px;*/
-  /*min-height: 400px;*/
+  min-height: 350px;
   display: flex;
   box-sizing: border-box;
 
 `;
 
-const mapStateToProps = ({tabs}) => {
+const mapStateToProps = ({tabs, room}) => {
     return {
-      tabValue: tabs.value
+      tabValue: tabs.value,
+      time: room.time,
+      dirt: room.dirt
     };
 };
 
 class App extends Component {
   constructor(props){
     super(props);
+    this.startTimer = this.startTimer.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
+
     this.state ={
       focusOnRoom: true
     }
@@ -48,11 +50,22 @@ class App extends Component {
     injectTapEventPlugin();      
   }
 
+  componentDidMount() {
+      this.startTimer();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.dirt.length === 0 && this.timer){
+      clearInterval(this.timer);
+    }
+  }
+
   handleSettingsSave() {
     this.props.dispatch(setTabValue('vacuum'));
     this.setState({
       focusOnRoom: true
     });
+    this.resetTimer();
   }
 
   handleTabChange(value){
@@ -63,20 +76,35 @@ class App extends Component {
 
   }
 
-  handleGithubClick(ev) {
-    console.log('github')
+  handleRestart(){
+    this.resetTimer();
+  }
+
+  startTimer(){
+      this.props.dispatch(setTime(0));
+    let time = 0;
+      this.timer = setInterval(() => {
+        time += 1000;
+      this.props.dispatch(setTime(time));
+    }, 1000);
+  }
+
+  resetTimer(){
+    if(this.timer){
+      clearInterval(this.timer);
+      this.startTimer();
+    }
   }
 
   render() {
     return (
       <MuiThemeProvider>
         <div className="App">
-
-          <a className="githubLink" href="https://github.com/bryonchan/roombaba" target="_blank"><img src="/GitHub-Mark-32px.png"/></a>
+          <a className="githubLink" href="https://github.com/bryonchan/roombaba" target="_blank"><img alt="Github logo" src="/GitHub-Mark-32px.png"/></a>
           <Tabs value={this.props.tabValue} onChange={this.handleTabChange.bind(this)}>
             <Tab label="Roombaba" value="vacuum">
               <TabContent className="tab">
-                <RoomView focus={this.state.focusOnRoom} />
+                <RoomView focus={this.state.focusOnRoom} onRestart={this.handleRestart.bind(this)} />
               </TabContent>
             </Tab>
             <Tab label="Settings" value="settings">
