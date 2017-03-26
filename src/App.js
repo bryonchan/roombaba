@@ -52,7 +52,7 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="App">
-          <a className="githubLink" href="https://github.com/bryonchan" target="_blank"><img src="/GitHub-Mark-32px.png"/> </a>
+          <a className="githubLink" href="https://github.com/bryonchan/roombaba" target="_blank"><img src="/GitHub-Mark-32px.png"/> </a>
           <Tabs value={this.props.tabValue} onChange={this.handleTabChange.bind(this)}>
             <Tab label="Roombaba" value="vacuum">
               <div className="tab">

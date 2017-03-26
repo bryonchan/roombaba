@@ -1,8 +1,13 @@
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+* Roombaba
 
-WASD
+Works best on Chrome, tested on Android Chrome
 
-Responsive
+** Features
+- Draggable Dimensions selector
 
-Mobile/PWA
-
+** Libraries
+- React
+- Redux
+- React Draggable
+- Create React App
+- Material Ui

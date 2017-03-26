@@ -73,8 +73,12 @@
 }
 
 .roombaba {
-  animation: Rock infinite 1s linear;
   transform-origin: 50% 50%;
+}
+
+@media (min-width: 480px){
+  animation: Rock infinite 1s linear;
+
 }
 
 .dimensionsContainer {
