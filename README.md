@@ -1,11 +1,11 @@
-* Roombaba
+# Roombaba
 
 Works best on Chrome, tested on Android Chrome
 
-** Features
+## Features
 - Draggable Dimensions selector
 
-** Libraries
+## Libraries
 - React
 - Redux
 - React Draggable
