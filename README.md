@@ -16,10 +16,9 @@ As a **minimum** you should build an interface with:
 * A representation of the robot's position within the room
 * A representation of the number of dirt patches which have been hoovered
 
+## Features
 - Use WSAD or the buttons to move the Roombaba around the room
 - Go to Settings to update the dimensions, starting location and locations of dirt
-
-## Features
 - Best on Chrome, tested on Android Chrome and iPhone Safari (iPhone 5c)
 - Draggable Dimensions selector
 - WSAD navigation
